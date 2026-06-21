@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import AssistantPanel from "./components/AssistantPanel";
 import CapabilityIndex from "./components/CapabilityIndex";
 import CaseStudies from "./components/CaseStudies";
 import ExperienceTimeline from "./components/ExperienceTimeline";
@@ -11,7 +10,6 @@ import {
   metrics,
   profile,
   projects,
-  promptAnswers,
   roles,
   skills,
   type CategoryId,
@@ -20,14 +18,11 @@ import {
 const navItems = [
   { label: "Profile", href: "#profile" },
   { label: "Automation", href: "#automation" },
-  { label: "Case Studies", href: "#case-studies" },
+  { label: "Use Cases", href: "#case-studies" },
   { label: "Experience", href: "#experience" },
   { label: "Skills", href: "#skills" },
-  { label: "Ask AI", href: "#ask-ai" },
   { label: "Contact", href: "#contact" },
 ];
-
-const promptLabels = promptAnswers.map((item) => item.prompt);
 
 function App() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>("automation");
@@ -66,11 +61,11 @@ function App() {
             </h1>
             <p>{profile.summary}</p>
             <div className="hero-actions">
-              <a className="button primary" href="#ask-ai">
-                Ask my portfolio
+              <a className="button primary" href="#case-studies">
+                View use cases
               </a>
-              <a className="button secondary" href="#case-studies">
-                View case studies
+              <a className="button secondary" href="#contact">
+                Contact me
               </a>
             </div>
           </div>
@@ -123,26 +118,6 @@ function App() {
 
         <ExperienceTimeline roles={roles} />
 
-        <section className="systems-section" aria-labelledby="systems-title">
-          <div className="section-label">Automation systems</div>
-          <div className="split-heading">
-            <h2 id="systems-title">Not just scripts. Operational systems with owners.</h2>
-            <p>
-              The work spans browser automation, app integration, production IT,
-              decision support, and living documentation.
-            </p>
-          </div>
-          <div className="system-table">
-            {projects.map((project) => (
-              <article className="system-row" key={project.name}>
-                <h3>{project.name}</h3>
-                <p>{project.outcome}</p>
-                <span>{project.stack.join(" / ")}</span>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section className="skills-section" id="skills" aria-labelledby="skills-title">
           <div className="section-label">Skills matrix</div>
           <div className="split-heading">
@@ -170,12 +145,6 @@ function App() {
             ))}
           </div>
         </section>
-
-        <AssistantPanel
-          answers={promptAnswers}
-          profileContext="Choose a prompt or ask a focused question. The assistant only answers from curated resume data, so it stays useful and honest."
-          prompts={promptLabels}
-        />
       </main>
 
       <footer className="site-footer" id="contact">
