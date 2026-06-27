@@ -136,7 +136,10 @@ export default function CaseStudies({ caseStudies }: CaseStudiesProps) {
             <p className="workflow-modal-summary">{selectedStudy.summary}</p>
             {selectedStudy.workflowImage ? (
               <div className="workflow-image-frame">
-                <img alt={selectedStudy.workflowAlt ?? `${selectedStudy.title} workflow screenshot`} src={selectedStudy.workflowImage} />
+                <img
+                  alt={selectedStudy.workflowAlt ?? `${selectedStudy.title} workflow screenshot`}
+                  src={selectedStudy.workflowImage}
+                />
               </div>
             ) : null}
             <div className="workflow-modal-grid">
