@@ -457,17 +457,6 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     platform: "n8n",
-    title: "ARS Client BAS Health Report Automation",
-    industry: "Reporting operations",
-    challenge:
-      "BAS health report preparation required structured client data handling and repeatable reporting steps.",
-    solution:
-      "Used n8n to coordinate report preparation steps and support consistent client reporting workflows.",
-    impact: "Report preparation organized into a more dependable automation flow.",
-    stack: ["n8n", "Reporting", "Client operations"],
-  },
-  {
-    platform: "n8n",
     title: "ARS/TSM Knowledge Base AI Agent",
     industry: "Knowledge operations",
     summary:
@@ -655,23 +644,66 @@ export const caseStudies: CaseStudy[] = [
     platform: "GoHighLevel",
     title: "ARS Booking Appointment Automation",
     industry: "CRM operations",
+    summary:
+      "Checks appointment status against Karbon client data, branches based on lookup result, creates missing Karbon contacts, posts team updates, and triggers downstream webhook handling.",
     challenge:
-      "ARS booking workflows needed integrated appointment handling inside the CRM process.",
+      "ARS booking follow-up needed a reliable way to check whether a client existed in Karbon, avoid manual lookup, and route found or missing contacts into the right next step.",
     solution:
-      "Configured GoHighLevel booking automation around calendar, CRM, and communication touchpoints.",
-    impact: "Booking activity organized inside the CRM automation workflow.",
-    stack: ["GoHighLevel", "Calendar", "CRM automation"],
+      "Built a GoHighLevel workflow that starts from appointment status, calls a Karbon lookup, branches on success, posts Teams updates, creates a Karbon contact when needed, and sends the result into downstream webhook processing.",
+    impact: "Appointment follow-up became more consistent across CRM, Karbon contact handling, and team visibility.",
+    keyResults: [
+      "Reduces manual client lookup before appointment follow-up.",
+      "Standardizes the branch between existing and missing Karbon contacts.",
+      "Creates missing Karbon contacts when the lookup does not find a match.",
+      "Posts Microsoft Teams updates so the team can see workflow outcomes.",
+      "Keeps downstream webhook routing consistent after each booking path.",
+    ],
+    connectedSystems: ["GoHighLevel", "Karbon", "Microsoft Teams", "Webhook"],
+    workflowSteps: [
+      "Trigger from the GoHighLevel appointment status workflow.",
+      "Call the Karbon client lookup step.",
+      "Evaluate whether the Karbon contact was found.",
+      "If the contact exists, post an update to Microsoft Teams.",
+      "Send the existing-contact path into downstream webhook handling.",
+      "If no matching contact exists, create the Karbon contact.",
+      "Post a Microsoft Teams update for the created-contact path.",
+      "Send the created-contact path into downstream webhook handling.",
+    ],
+    workflowImage: "/workflows/ars-booking-appointment-automation.png",
+    workflowAlt: "GoHighLevel workflow showing appointment status, Karbon client lookup, success branching, Teams updates, missing-contact creation, and downstream webhook steps.",
+    hasWorkflowDetails: true,
+    stack: ["GoHighLevel", "Karbon", "Teams", "Webhook"],
   },
   {
     platform: "GoHighLevel",
     title: "TSM Booking Appointment Automation",
     industry: "CRM operations",
+    summary:
+      "Receives inbound booking data, creates or updates the contact, checks whether the contact already has the new online booking tag, and applies the tag only when missing.",
     challenge:
-      "TSM booking workflows needed reliable appointment automation without disconnected manual steps.",
+      "TSM booking contacts needed consistent tagging for online booking follow-up without repeatedly adding duplicate tags or missing new client segmentation.",
     solution:
-      "Configured GoHighLevel booking automation to support appointment scheduling and follow-up.",
-    impact: "Appointment workflows made more structured inside GoHighLevel.",
-    stack: ["GoHighLevel", "Appointments", "CRM automation"],
+      "Built a GoHighLevel workflow that starts from an inbound webhook, creates or updates the contact, branches on whether the online booking tag is already present, and applies the tag only when needed.",
+    impact: "New online booking contacts became easier to segment and route into follow-up automation.",
+    keyResults: [
+      "Keeps booking contacts consistently tagged for follow-up.",
+      "Avoids duplicate tag work when the contact already has the online booking tag.",
+      "Supports cleaner CRM segmentation for new online bookings.",
+      "Prepares booking contacts for downstream follow-up automation.",
+    ],
+    connectedSystems: ["GoHighLevel", "Inbound Webhook", "Contact Records", "Tags"],
+    workflowSteps: [
+      "Trigger from an inbound GoHighLevel webhook.",
+      "Create or update the contact record from the inbound booking data.",
+      "Check whether the contact tags already include new client online booking.",
+      "If the tag is missing, add the booking tag to the contact.",
+      "If the tag already exists, leave the contact unchanged.",
+      "Keep the contact ready for downstream CRM follow-up automation.",
+    ],
+    workflowImage: "/workflows/tsm-booking-appointment-automation.png",
+    workflowAlt: "GoHighLevel workflow showing inbound webhook, contact creation, tag condition, and add-tag branch for new client online booking follow-up.",
+    hasWorkflowDetails: true,
+    stack: ["GoHighLevel", "Webhook", "Contacts", "Tags"],
   },
 ];
 
@@ -716,6 +748,6 @@ export const promptAnswers: PromptAnswer[] = [
     prompt: "Which use cases are in the portfolio?",
     keywords: ["use case", "case", "sharepoint", "onefile", "bas", "score", "leave", "knowledge base"],
     answer:
-      "Current use cases include Power Automate workflows for ITR docs, client folders, and SharePoint posts; n8n workflows for Onefile invoices, birthday milestones, BAS health reports, and a Knowledge Base AI Agent; Zapier flows for bookings, leave management, and incoming score calls; plus GoHighLevel booking automations for ARS and TSM.",
+      "Current use cases include Power Automate workflows for ITR docs, client folders, and SharePoint posts; n8n workflows for Onefile invoices, birthday milestones, and a Knowledge Base AI Agent; Zapier flows for bookings, leave management, and incoming score calls; plus GoHighLevel booking automations for ARS and TSM.",
   },
 ];
